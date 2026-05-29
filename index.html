@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة معدل البكالوريا 2026 | BAC Calculator</title>
+    <meta name="description" content="أقوى وأجمل موقع لحساب معدل البكالوريا لجميع الشعب بتصميم عصري ودقيق.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="animate__animated animate__fadeInDown">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>BAC<span>Calculator</span> 2026</h1>
+            </div>
+            <p class="subtitle">حساب معدل البكالوريا لجميع الشعب</p>
+        </header>
+
+        <main>
+            <!-- Stream Selection -->
+            <section class="stream-selector animate__animated animate__fadeInUp">
+                <h2>اختر شعبتك</h2>
+                <div class="stream-grid" id="streamGrid">
+                    <button class="stream-card" data-stream="science">
+                        <i class="fas fa-microscope"></i>
+                        <span>علوم تجريبية</span>
+                    </button>
+                    <button class="stream-card" data-stream="math">
+                        <i class="fas fa-infinity"></i>
+                        <span>رياضيات</span>
+                    </button>
+                    <button class="stream-card" data-stream="tech">
+                        <i class="fas fa-gears"></i>
+                        <span>تقني رياضي</span>
+                    </button>
+                    <button class="stream-card" data-stream="management">
+                        <i class="fas fa-chart-line"></i>
+                        <span>تسيير واقتصاد</span>
+                    </button>
+                    <button class="stream-card" data-stream="philosophy">
+                        <i class="fas fa-book-open"></i>
+                        <span>آداب وفلسفة</span>
+                    </button>
+                    <button class="stream-card" data-stream="languages">
+                        <i class="fas fa-language"></i>
+                        <span>لغات أجنبية</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Calculator Form -->
+            <section id="calculatorSection" class="calculator-card hidden">
+                <div class="card-header">
+                    <h3 id="selectedStreamTitle">علوم تجريبية</h3>
+                    <button id="backBtn" class="back-btn"><i class="fas fa-arrow-right"></i> تغيير الشعبة</button>
+                </div>
+                
+                <form id="bacForm">
+                    <div class="subjects-grid" id="subjectsGrid">
+                        <!-- Dynamic Content -->
+                    </div>
+
+                    <div class="additional-options">
+                        <div class="option-item">
+                            <label class="switch">
+                                <input type="checkbox" id="peToggle" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <span>التربية البدنية (محتسبة)</span>
+                        </div>
+                        <div class="option-item">
+                            <label class="switch">
+                                <input type="checkbox" id="artToggle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span>نقطة التربية التشكيلية/الموسيقية (+10)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="calc-btn">
+                            <span class="btn-text">احسب المعدل</span>
+                            <i class="fas fa-calculator"></i>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultSection" class="result-card hidden">
+                <div class="result-display">
+                    <div class="circular-progress">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="value-container">
+                            <span id="finalAverage">00.00</span>
+                            <small>/20</small>
+                        </div>
+                    </div>
+                    <div class="result-info">
+                        <h2 id="resultStatusText">ناجح بامتياز!</h2>
+                        <p id="resultMessage">ألف مبروك! لقد حصلت على معدل مشرف جداً.</p>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="label">المجموع:</span>
+                                <span class="value" id="totalPoints">000.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="label">المعامل:</span>
+                                <span class="value" id="totalCoeff">00</span>
+                            </div>
+                        </div>
+                        <button type="button" class="share-btn" id="shareBtn">
+                            <i class="fas fa-share-alt"></i> مشاركة النتيجة
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- بطاقة المشاركة -->
+<div id="shareCard" class="share-card hidden">
+    <div class="share-header">
+        <h1>كشف نقاط البكالوريا 2026</h1>
+        <p id="shareStream"></p>
+    </div>
+
+    <div class="share-average">
+        <span id="shareAverage">00.00</span>
+        <small>/20</small>
+    </div>
+
+    <table class="share-table">
+        <thead>
+            <tr>
+                <th>المادة</th>
+                <th>النقطة</th>
+                <th>المعامل</th>
+            </tr>
+        </thead>
+        <tbody id="shareTableBody"></tbody>
+    </table>
+
+    <div class="share-footer">
+        <div>
+            <span>المجموع:</span>
+            <strong id="shareTotal"></strong>
+        </div>
+
+        <div>
+            <span>التقدير:</span>
+            <strong id="shareMention"></strong>
+        </div>
+    </div>
+</div>
+
+<!-- html2canvas -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</body>
+</html>
