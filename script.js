@@ -324,15 +324,51 @@ function displayResult(avg, totalP, totalC) {
 
 // Share Result As Image
 // مشاركة كشف النقاط كصورة
-document.getElementById('shareBtn').addEventListener('click', async () => {
+let generatedBlob = null;
+
+async function createResultImage() {
 
     const shareCard = document.getElementById('shareCard');
-    const shareTableBody = document.getElementById('shareTableBody');
 
-    // تنظيف الجدول
+    shareCard.classList.remove('hidden');
+
+    const canvas = await html2canvas(shareCard, {
+        scale: 3,
+        useCORS: true
+    });
+
+    shareCard.classList.add('hidden');
+
+    generatedBlob = await new Promise(resolve =>
+        canvas.toBlob(resolve, 'image/png')
+    );
+
+    return generatedBlob;
+}
+
+function downloadImage(blob) {
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+
+    a.href = url;
+    a.download = 'bac-result.png';
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+}
+
+async function prepareShareCard() {
+
+    const shareTableBody =
+        document.getElementById('shareTableBody');
+
     shareTableBody.innerHTML = '';
 
-    // تعبئة البيانات
     document.getElementById('shareStream').textContent =
         currentStream.title;
 
@@ -342,7 +378,6 @@ document.getElementById('shareBtn').addEventListener('click', async () => {
     document.getElementById('shareTotal').textContent =
         totalPoints.textContent;
 
-    // التقدير
     let mention = "راسب";
 
     const avg = parseFloat(finalAverage.textContent);
@@ -353,28 +388,27 @@ document.getElementById('shareBtn').addEventListener('click', async () => {
     else if (avg >= 12) mention = "قريب من الجيد";
     else if (avg >= 10) mention = "مقبول";
 
-    document.getElementById('shareMention').textContent = mention;
+    document.getElementById('shareMention').textContent =
+        mention;
 
-    // المواد
     currentStream.subjects.forEach(subject => {
 
-        const value =
-            document.getElementById(subject.id)?.value || "0";
+        const val =
+            document.getElementById(subject.id)?.value || 0;
 
         shareTableBody.innerHTML += `
             <tr>
                 <td>${subject.name}</td>
-                <td>${parseFloat(value).toFixed(2)}</td>
+                <td>${parseFloat(val).toFixed(2)}</td>
                 <td>${subject.coeff}</td>
             </tr>
         `;
     });
 
-    // التربية البدنية
     if (peToggle.checked) {
 
         const peVal =
-            document.getElementById('pe_input')?.value || "0";
+            document.getElementById('pe_input')?.value || 0;
 
         shareTableBody.innerHTML += `
             <tr>
@@ -385,54 +419,60 @@ document.getElementById('shareBtn').addEventListener('click', async () => {
         `;
     }
 
-    // إنشاء الصورة
-    try {
+    generatedBlob = null;
+}
+document.getElementById('shareBtn')
+.addEventListener('click', async () => {
 
-        shareCard.classList.remove('hidden');
+    await prepareShareCard();
 
-        const canvas = await html2canvas(shareCard, {
-            scale: 3,
-            useCORS: true
+    const blob =
+        generatedBlob || await createResultImage();
+
+    const file = new File(
+        [blob],
+        'bac-result.png',
+        { type: 'image/png' }
+    );
+
+    if (
+        navigator.canShare &&
+        navigator.canShare({ files:[file] })
+    ) {
+
+        await navigator.share({
+            title:'كشف نقاط البكالوريا',
+            files:[file]
         });
 
-        shareCard.classList.add('hidden');
+    } else {
 
-        canvas.toBlob(async (blob) => {
-
-            const file = new File(
-                [blob],
-                'bac-result.png',
-                { type: 'image/png' }
-            );
-
-            if (
-                navigator.canShare &&
-                navigator.canShare({ files: [file] })
-            ) {
-
-                await navigator.share({
-                    title: 'كشف نقاط البكالوريا',
-                    files: [file]
-                });
-
-            } else {
-
-                const link = document.createElement('a');
-
-                link.download = 'bac-result.png';
-                link.href = URL.createObjectURL(blob);
-                link.click();
-            }
-
-        });
-
-    } catch (err) {
-
-        console.error(err);
-
-        shareCard.classList.add('hidden');
-
-        alert("حدث خطأ أثناء إنشاء صورة المشاركة");
+        downloadImage(blob);
     }
 });
+document.getElementById('downloadBtn')
+.addEventListener('click', async () => {
+
+    await prepareShareCard();
+
+    const blob =
+        generatedBlob || await createResultImage();
+
+    downloadImage(blob);
+});
+async function generateResultImage() {
+
+    const shareCard = document.getElementById('shareCard');
+
+    shareCard.classList.remove('hidden');
+
+    const canvas = await html2canvas(shareCard, {
+        scale: 3,
+        useCORS: true
+    });
+
+    shareCard.classList.add('hidden');
+
+    return canvas;
+}
 init();

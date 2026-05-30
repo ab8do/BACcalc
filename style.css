@@ -620,3 +620,12 @@ footer p { opacity: 0.6; margin-bottom: 1rem; }
 .share-footer strong {
     color: #4f46e5;
 }
+.share-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.share-actions .share-btn{
+    flex:1;
+}
