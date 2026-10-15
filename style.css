@@ -364,7 +364,7 @@ input:checked + .slider:before { transform: translateX(26px); }
 }
 
 .result-card::before {
-    content: "BAC 2026";
+    content: "BAC 2027";
     position: absolute;
     top: -20px;
     left: -20px;
